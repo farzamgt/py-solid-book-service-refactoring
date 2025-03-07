@@ -1,7 +1,7 @@
 import json
 import xml.etree.ElementTree as ET
 from abc import ABC, abstractmethod
-
+from typing import Optional
 
 class Book:
     def __init__(self, title: str, content: str):
@@ -68,7 +68,7 @@ class BookManager:
     def __init__(self, book: Book):
         self.book = book
 
-    def execute(self, strategy: object) -> None | str:
+    def execute(self, strategy: object) ->  Optional[str]:
         if isinstance(strategy, DisplayStrategy):
             strategy.display(self.book.content)
         elif isinstance(strategy, PrintStrategy):
