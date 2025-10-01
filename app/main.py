@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 from abc import ABC, abstractmethod
 from typing import Optional
 
+
 class Book:
     def __init__(self, title: str, content: str):
         self.title = title
