@@ -1,10 +1,11 @@
 import json
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET  # noqa: N817,N813
 from abc import ABC, abstractmethod
 from typing import Optional
 
+
 class Book:
-    def __init__(self, title: str, content: str):
+    def __init__(self, title: str, content: str) -> None:
         self.title = title
         self.content = content
 
@@ -65,10 +66,10 @@ class XmlSerializer(Serializer):
 
 
 class BookManager:
-    def __init__(self, book: Book):
+    def __init__(self, book: Book) -> None:
         self.book = book
 
-    def execute(self, strategy: object) ->  Optional[str]:
+    def execute(self, strategy: object) -> Optional[str]:
         if isinstance(strategy, DisplayStrategy):
             strategy.display(self.book.content)
         elif isinstance(strategy, PrintStrategy):
@@ -79,8 +80,28 @@ class BookManager:
             raise ValueError(f"Unknown strategy type: {type(strategy)}")
 
 
+def main(book: Book, actions: list[tuple[str, str]]) -> Optional[str]:
+    manager = BookManager(book)
+    result: Optional[str] = None
+
+    for action_type, action_value in actions:
+        if action_type == "display":
+            if action_value == "console":
+                manager.execute(ConsoleDisplay())
+            elif action_value == "reverse":
+                manager.execute(ReverseDisplay())
+        elif action_type == "print":
+            if action_value == "console":
+                manager.execute(ConsolePrint())
+            elif action_value == "reverse":
+                manager.execute(ReversePrint())
+        elif action_type == "serialize":
+            if action_value == "json":
+                result = manager.execute(JsonSerializer())
+            elif action_value == "xml":
+                result = manager.execute(XmlSerializer())
+    return result
+
+
 if __name__ == "__main__":
-    sample_book = Book("Sample Book", "This is some sample content.")
-    manager = BookManager(sample_book)
-    manager.execute(ReverseDisplay())
-    print(manager.execute(XmlSerializer()))
+    main()
