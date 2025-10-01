@@ -1,7 +1,7 @@
 import json
 import xml.etree.ElementTree as ET  # noqa: N817,N813
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, List, Tuple
 
 
 class Book:
@@ -80,7 +80,7 @@ class BookManager:
             raise ValueError(f"Unknown strategy type: {type(strategy)}")
 
 
-def main(book: Book, actions: list[tuple[str, str]]) -> Optional[str]:
+def main(book: Book, actions: List[Tuple[str, str]]) -> Optional[str]:
     manager = BookManager(book)
     result: Optional[str] = None
 
@@ -104,4 +104,5 @@ def main(book: Book, actions: list[tuple[str, str]]) -> Optional[str]:
 
 
 if __name__ == "__main__":
-    main()
+    sample_book = Book("Sample Book", "This is some sample content.")
+    main(sample_book, [("display", "console")])
